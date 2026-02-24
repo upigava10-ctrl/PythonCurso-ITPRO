@@ -11,7 +11,6 @@ No. cuenta: 425121087
 
 Fecha de entrega: 23/02/2026
 '''
-'''
 #EJ1
 print("\nEJERCICIO 1 MAYOR DE EDAD")
 
@@ -363,7 +362,6 @@ while impr != 30:
     if impr % 3 == 0:
         continue
     print(impr)
-'''
 
 #EJ23
 print("\nEJERCICIO 23 BUSCAR ELEMENTO (for-else)")
@@ -376,3 +374,21 @@ for i,valor in enumerate(nums):
         break
 else:
     print("No encontrado")
+    
+
+#EJ24
+print("\nEJERCICIO 24 RETO INTEGRADOR: MINI SISTEMA DE INSCRIPCIÓN")
+while True:
+    nombre=str(input("Nombre: ")).strip()
+    edad=int(input("Edad: "))
+    carrera=str(input("Carrera: "))
+    if nombre=="":
+        print("Error en el nombre, vuelve a ingresar los datos\n")
+        continue
+    break
+if edad < 18:
+    print("No elegible")
+else: 
+    print("Registro existoso")
+
+print(nombre,edad,carrera)
