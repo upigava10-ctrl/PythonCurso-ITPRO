@@ -207,7 +207,6 @@ if 0 <= num9 <= 100:
     print("\n Dentro del rango")
 else:
     print("\nFuera del rango")
-'''
 
 #EJ10
 print("\nEJERCICIO 10 USUARIO Y CONTRASEÑA")
@@ -247,3 +246,133 @@ if nombre in invitados:
 else:
     print("No invitado")
 
+#EJ13
+print("\nEJERCICIO 13 CONTADOR CON WHILE")
+a=0
+while a != 10:
+    a+=1
+    print(a)
+
+#EJ14
+print("\nEJERCICIO 14 SUMA ACUMULADA(TERMINA CON CERO)")
+c=0
+b=None
+while b != 0:
+    b=float(input("Ingresa número a sumar o cero para terminar: "))
+    c+=b
+    if b != 0:
+        continue
+    print(f"Suma = {c}")
+
+#EJ15
+print("\nEJERCICIO 15 ADIVINA EL NÚMERO")
+guess=7
+num15=0
+while num15 != guess:
+    num15=int(input("Ingresa número: "))
+    if num15 > guess:
+        print("Muy alto")
+        continue
+    elif num15 < guess:
+        print("Muy bajo")
+        continue
+    else: 
+        print("Correcto")
+
+#EJ16
+print("\nEJERCICIO 16 DO-WHILE SIMULADO: MENÚ QUE SE REPITE")
+while True:
+    print("\n---------MENU-------------")
+    print("1) Saludar")
+    print("2) Mostrar tabla de 5")
+    print("3) Salir")
+
+    opcion=input("\nIngrese la opción deseada: ")
+    match opcion:
+        case "1":
+            print("--------------")
+            print("Holis, bolis, este es un saludo")
+            print("--------------")
+            continue
+        case "2":
+            print("--------------")            
+            a=0
+            while a != 10:
+                a+=1
+                print(a*5)
+            print("--------------")
+            continue
+        case "3":
+            print("--------------")
+            break
+        case _:
+            print("--------------")
+            print("Escoja entre las opciones")
+            continue
+
+#EJ17
+print("\nEJERCICIO 17 TABLA DE MULTIPLICAR")
+a=int(input("Ingrese entero: "))
+for i in range(10):
+    print(a*(i+1))
+
+#EJ18
+print("\nEJERCICIO 18 SUMA DE PARES")
+n=int(input("Ingrese entero: "))
+suma=0
+for i in range(2,n+1,2):
+    suma+=i
+print(f"Suma de los pares hasta {n} es de {suma}")
+
+#EJ19
+print("\nEJERCICIO 19 ENUMERA CARACTERES")
+txt=list(input("Ingrese texto: "))
+print(txt)
+
+for i in enumerate(txt):
+    print(i)
+
+#No puede ingresar cero, falta marcar error
+#EJ20
+print("\nEJERCICIO 20 PROMEDIO DE CALIFICACIÓN")
+k=int(input("Ingrese cantidad a promediar: "))
+sum_prom=0
+for i in range(k):
+    nw_cali=float(input(f"Ingresa calificación {i+1}: "))
+    sum_prom+=nw_cali
+print(sum_prom/k)
+
+#EJ21
+print("\nEJERCICIO 21 CONTRASEÑA  CON 3 INTENTOS")
+count=0
+while True:
+    count+=1
+    password=input(f"Intento {count}: Ingresa contraseña: ")
+    if password == "1234":
+        print("Acceso")
+        break 
+    elif count ==3:
+        print("Bloquedo")
+        break        
+
+#EJ22
+print("\nEJERCICIO 22 SALTAR MÚLTIPLOS DE 3")
+impr=0
+while impr != 30:
+    impr+=1
+    if impr % 3 == 0:
+        continue
+    print(impr)
+'''
+
+#EJ23
+print("\nEJERCICIO 23 BUSCAR ELEMENTO (for-else)")
+nums=[4,8,15,16,23,42]
+n=int(input("Ingrese entero: "))
+
+for i,valor in enumerate(nums):
+    if n == valor:
+        print("Encontrado")
+        break
+else:
+    print("No encontrado")
