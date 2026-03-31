@@ -2,12 +2,11 @@ import pandas as pd
 import numpy as np
 import json
 import html as htmlLib
+import matplotlib.pyplot as plt
 
 
 
-
-
-#Proyecto Final AVANCE 2 Curso Python IT-PRO
+#Proyecto Final Curso Python IT-PRO
 #Predicción de precio de Vivienda en la Benito Juarez
 
 #Nombre: Aura del Carmen García Vázquez
@@ -96,6 +95,13 @@ prom_m2=np.mean(valores_limpios_m2)
 # print(valores_limpios_m2)
 print(f"\nPrecio promedio de m2 {prom_m2}")
 
+df_m2 = pd.DataFrame({
+    "Precio m2": valores_limpios_m2
+})
+
+df_m2.plot(title="Precio por m2 en la Benito Juarez: datos de Vivanuncios")
+plt.show()
+
 
 ##############Regresión Lineal Precio Anual################
 # (tiempo)
@@ -112,6 +118,17 @@ for i in range(len(valores_precio_anual), len(valores_precio_anual) + t):
 t_futuro = len(valores_precio_anual) + t
 
 precio_base = m * t_futuro + b
+
+##############Gráfica atraves del tiempo################
+
+df_precio_anual = pd.DataFrame({
+    "Precio": valores_precio_anual,
+    "Regresion": m * np.arange(len(valores_precio_anual)) + b
+})
+
+df_precio_anual.plot(title=f"Evolucion del precio de vivienda 2016-2021")
+plt.show()
+
 
 ##############Factores de crecimiento################
 factor_salario = prom_salario_objetivo / prom_salario_objetivo*0.7
