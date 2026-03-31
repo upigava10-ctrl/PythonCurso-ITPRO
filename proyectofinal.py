@@ -7,7 +7,7 @@ import html as htmlLib
 
 
 
-#Proyecto Final AVENCE 1 Curso Python IT-PRO
+#Proyecto Final AVANCE 2 Curso Python IT-PRO
 #Predicción de precio de Vivienda en la Benito Juarez
 
 #Nombre: Aura del Carmen García Vázquez
@@ -52,15 +52,15 @@ print(f"\nTotal poblacion en rango: {suma_poblacion_objetivo}")
 print(f"\nPromedio de la tasa de crecimiento habitacional en la alcaldia {prom_tasa_habi}")
 
 ##############Crecimiento exponencial de población##############
-# t= float(input("¿A cuántos años desea estimar? "))
-# pob_fut = suma_poblacion_objetivo*(1+prom_tasa_habi)**t
-# print(pob_fut)
+t= int(input("¿A cuántos años desea estimar? "))
+pob_fut = suma_poblacion_objetivo*(1+prom_tasa_habi)**t
+#print(pob_fut)
 
 ###############Extraer valores del html de una página guardada ##############
 with open("Prec_Casas_Dep_Venta_BJ _Vivanuncios.html", "r", encoding="utf-8") as f:
     html = f.read()
 
-##############Precio de vivienda promedio 2016-2021###############
+##############Precio de vivienda 2016-2021###############
 inicio = html.find('data-chart="') + len('data-chart="')
 fin = html.find('">', inicio)
 data_raw = html[inicio:fin]
@@ -79,10 +79,10 @@ for item in data_json["statistics"]:
 # print(valores_precio_anual)
 
 #############Precio promedio por m^2 en la Benito Juarez##############
-partes = html.split('c-table__table-column-3">')
+preciom2 = html.split('c-table__table-column-3">')
 valores_m2 = []
 
-for parte in partes[2:]:
+for parte in preciom2[2:]:
     valor = parte.split("</td>")[0]
     valores_m2.append(valor)
 # print(valores_m2)
@@ -92,7 +92,9 @@ valores_limpios_m2 = [
     for v in valores_m2
 ]
 
+prom_m2=np.mean(valores_limpios_m2)
 # print(valores_limpios_m2)
+print(f"\nPrecio promedio de m2 {prom_m2}")
 
 
 ##############Regresión Lineal Precio Anual################
@@ -103,35 +105,35 @@ y = np.array(valores_precio_anual)
 #Función de numpy
 m, b = np.polyfit(x, y, 1)
 
-x_futuro = np.arange(len(valores_precio_anual) + 3)  # 3 puntos mas al futuro
-y_pred = m * x_futuro + b
-
 print("\nPredicciones futuras: con el precio Anual")
-for i in range(len(valores_precio_anual), len(valores_precio_anual) + 3):
+for i in range(len(valores_precio_anual), len(valores_precio_anual) + t):
     print(f"Periodo {i}: {m*i + b}")
 
+t_futuro = len(valores_precio_anual) + t
 
-##############Regresión Lineal Precio Promedio m^2################
-# (tiempo)
-x = np.arange(len(valores_limpios_m2))
-y = np.array(valores_limpios_m2)
+precio_base = m * t_futuro + b
 
-#Función de numpy
-m, b = np.polyfit(x, y, 1)
+##############Factores de crecimiento################
+factor_salario = prom_salario_objetivo / prom_salario_objetivo*0.7
+factor_poblacion = suma_poblacion_objetivo / 100000
+factor_crecimiento = 1 + prom_tasa_habi
 
-x_futuro = np.arange(len(valores_limpios_m2) + 3)  # 3 puntos mas al futuro
-y_pred = m * x_futuro + b
+precio_ajustado = precio_base * factor_salario * factor_crecimiento * factor_poblacion
 
-print("\nPredicciones futuras: con el precio promedio de m2")
-for i in range(len(valores_limpios_m2), len(valores_limpios_m2) + 3):
-    print(f"Periodo {i}: {m*i + b}")
+precio_ajustado = round(precio_ajustado, 2)
+print("\nPrecio ajustado:", precio_ajustado)
+
+precio_m2_ajustado = prom_m2 * factor_crecimiento
+
+metros= float(input("¿De cuántos m^2 estamos hablando? "))
+
+precio_vivienda = precio_m2_ajustado * metros
+precio_vivienda = round(precio_vivienda, 2)
+
+print(f"\nPrecio estimado para {metros} m²: {precio_vivienda}")
 
 
 
-
-
-#precio_vivienda = precio_m2 * metros
-#pago_maximo = salario * 0.30
 #1 obtener_datos_api ?
 #2 limpiar_datos 
 #3 modelo_demanda
