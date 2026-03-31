@@ -47,9 +47,9 @@ prom_salario_objetivo= np.mean(df_salario_min_viable["Monthly Wage"])
 suma_poblacion_objetivo = np.sum(df_rango_edad_30_44["Population"])
 prom_tasa_habi = np.mean(TCMA_col_BJ)
 
-print(f"Prom salario en rango: {prom_salario_objetivo}")
-print(f"Total poblacion en rango: {suma_poblacion_objetivo}")
-print(f"Promedio de la tasa de crecimiento habitacional en la alcaldia {prom_tasa_habi}")
+print(f"\nProm salario en rango: {prom_salario_objetivo}")
+print(f"\nTotal poblacion en rango: {suma_poblacion_objetivo}")
+print(f"\nPromedio de la tasa de crecimiento habitacional en la alcaldia {prom_tasa_habi}")
 
 ##############Crecimiento exponencial de población##############
 # t= float(input("¿A cuántos años desea estimar? "))
@@ -69,25 +69,64 @@ data_clean = htmlLib.unescape(data_raw)
 data_json = json.loads(data_clean)
 
 # print(data_json["statistics"])
+# for item in data_json["statistics"]:
+#     print(item["label"], item["value"])
 
+valores_precio_anual=[]
 for item in data_json["statistics"]:
-    print(item["label"], item["value"])
+    valores_precio_anual.append(item["value"])
 
+# print(valores_precio_anual)
+
+#############Precio promedio por m^2 en la Benito Juarez##############
 partes = html.split('c-table__table-column-3">')
 valores_m2 = []
 
-#############Precio promedio por m^2 en la Benito Juarez##############
 for parte in partes[2:]:
     valor = parte.split("</td>")[0]
     valores_m2.append(valor)
 # print(valores_m2)
 
-valores_limpios = [
+valores_limpios_m2 = [
     int(v.replace("$", "").replace(",", ""))
     for v in valores_m2
 ]
 
-print(valores_limpios)
+# print(valores_limpios_m2)
+
+
+##############Regresión Lineal Precio Anual################
+# (tiempo)
+x = np.arange(len(valores_precio_anual))
+y = np.array(valores_precio_anual)
+
+#Función de numpy
+m, b = np.polyfit(x, y, 1)
+
+x_futuro = np.arange(len(valores_precio_anual) + 3)  # 3 puntos mas al futuro
+y_pred = m * x_futuro + b
+
+print("\nPredicciones futuras: con el precio Anual")
+for i in range(len(valores_precio_anual), len(valores_precio_anual) + 3):
+    print(f"Periodo {i}: {m*i + b}")
+
+
+##############Regresión Lineal Precio Promedio m^2################
+# (tiempo)
+x = np.arange(len(valores_limpios_m2))
+y = np.array(valores_limpios_m2)
+
+#Función de numpy
+m, b = np.polyfit(x, y, 1)
+
+x_futuro = np.arange(len(valores_limpios_m2) + 3)  # 3 puntos mas al futuro
+y_pred = m * x_futuro + b
+
+print("\nPredicciones futuras: con el precio promedio de m2")
+for i in range(len(valores_limpios_m2), len(valores_limpios_m2) + 3):
+    print(f"Periodo {i}: {m*i + b}")
+
+
 
 
 
@@ -97,28 +136,3 @@ print(valores_limpios)
 #2 limpiar_datos 
 #3 modelo_demanda
 #4 graficas
-
-
-
-## --- Parámetros de simulación ---
-#poblacion_total = 434153
-#media_edad = 39
-
-## Generar datos de ejemplo (¡esto es una simulación!)
-#np.random.seed(42) # Para que los resultados sean reproducibles
-#edades = np.random.normal(media_edad, 12, poblacion_total).astype(int)
-#ingresos = np.random.exponential(20000, poblacion_total).astype(int) # Simulación simple
-
-#df_benito_juarez = pd.DataFrame({'edad': edades, 'ingreso_mensual': ingresos})
-## Limpiar datos (edades negativas, ingresos muy bajos, etc.)
-#df_benito_juarez = df_benito_juarez[(df_benito_juarez['edad'] >= 18) & (df_benito_juarez['ingreso_mensual'] > 6000)]
-#print(df_benito_juarez.head())
-
-## Ejemplo de filtro
-#condicion_edad_hombre = (df_benito_juarez['edad'] <= 40) # 40 + 30 = 70
-#condicion_edad_mujer = (df_benito_juarez['edad'] <= 45) # 45 + 30 = 75
-
-#condicion_ingreso = df_benito_juarez['ingreso_mensual'] > 15000 # Ingreso mínimo para un crédito digno
-
-#df_compradores_potenciales = df_benito_juarez[condicion_ingreso] # Aplicar filtros
-#print(f"Total de compradores potenciales: {len(df_compradores_potenciales)}")
